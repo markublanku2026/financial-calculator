@@ -1,0 +1,37 @@
+{
+  "name": "financial-calculator",
+  "private": true,
+  "version": "0.2.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "seo": "node ./scripts/generate-seo.mjs",
+    "build": "npm run seo && tsc -b && vite build",
+    "preview": "vite preview",
+    "preview:test": "VITE_E2E_TEST_ROUTE=true npm run build && VITE_E2E_TEST_ROUTE=true vite preview --host 127.0.0.1 --port 4173 --strictPort",
+    "lint": "oxlint src scripts vite.config.ts vitest.config.ts playwright.config.ts e2e",
+    "test": "vitest run --config vitest.config.ts",
+    "test:e2e": "playwright test",
+    "test:e2e:headed": "playwright test --headed"
+  },
+  "dependencies": {
+    "react": "^19.2.7",
+    "react-dom": "^19.2.7",
+    "react-router-dom": "^7.18.1"
+  },
+  "devDependencies": {
+    "@testing-library/jest-dom": "^6.9.1",
+    "@testing-library/react": "^16.3.0",
+    "@testing-library/user-event": "^14.6.1",
+    "@types/node": "^24.13.2",
+    "@types/react": "^19.2.17",
+    "@types/react-dom": "^19.2.3",
+    "@vitejs/plugin-react": "^6.0.3",
+    "jsdom": "^27.0.0",
+    "oxlint": "^1.71.0",
+    "playwright": "^1.61.1",
+    "typescript": "~6.0.2",
+    "vite": "^8.1.1",
+    "vitest": "^3.2.4"
+  }
+}

@@ -1,0 +1,16 @@
+export const seoRoutes = [
+  '/',
+  '/calculators',
+  '/about',
+  '/privacy-policy',
+  '/financial-disclaimer',
+  '/support',
+  '/calculators/hourly-to-annual-income',
+  '/calculators/salary',
+  '/calculators/loan-payment',
+  '/calculators/savings-growth',
+  '/calculators/credit-card-payoff',
+  '/calculators/mortgage',
+  '/calculators/budget-planner',
+  '/calculators/retirement',
+];
