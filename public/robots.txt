@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://financial-calculator.wongmarkbenedickny.workers.dev/sitemap.xml
+Sitemap: https://example.invalid/sitemap.xml
