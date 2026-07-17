@@ -1,5 +1,9 @@
 import { test, expect, assertOnlyPreferenceStorage, expectNoHorizontalOverflow, expectSingleH1, expectVisibleFocus, saveReviewScreenshot } from './fixtures';
 
+const configuredPublicOrigin = process.env.VITE_SITE_ORIGIN?.trim().replace(/\/$/, '');
+const fallbackPublicOrigin = 'https://example.invalid';
+const expectedSeoOrigin = configuredPublicOrigin || fallbackPublicOrigin;
+
 const auditedRoutes = [
   '/',
   '/calculators',
@@ -92,6 +96,7 @@ test.describe('controlled error fallback', () => {
 });
 
 test('all audited routes have one H1, valid metadata, valid canonical behavior, and no horizontal overflow', async ({ page, baseURL }) => {
+  const expectedCanonicalOrigin = configuredPublicOrigin || baseURL || 'http://127.0.0.1:4173';
   const titles = new Set<string>();
 
   for (const route of auditedRoutes) {
@@ -109,7 +114,7 @@ test('all audited routes have one H1, valid metadata, valid canonical behavior, 
 
     const canonical = await page.locator('link[rel="canonical"]').getAttribute('href');
     expect(canonical).toBeTruthy();
-    expect(canonical?.startsWith(baseURL ?? 'http://127.0.0.1:4173')).toBe(true);
+    expect(canonical?.startsWith(expectedCanonicalOrigin)).toBe(true);
   }
 });
 
@@ -117,7 +122,7 @@ test('seo assets match real routes and avoid a fake production domain', async ({
   const robots = await request.get('/robots.txt');
   expect(robots.ok()).toBe(true);
   const robotsText = await robots.text();
-  expect(robotsText).toContain('Sitemap: /sitemap.xml');
+  expect(robotsText).toContain(`Sitemap: ${expectedSeoOrigin}/sitemap.xml`);
   expect(robotsText).not.toContain('localhost');
 
   const sitemap = await request.get('/sitemap.xml');
@@ -127,7 +132,7 @@ test('seo assets match real routes and avoid a fake production domain', async ({
     if (route === '/not-a-real-route') continue;
     if (route === '/404') continue;
   }
-  expect(sitemapText).toContain('<loc>https://example.invalid/</loc>');
+  expect(sitemapText).toContain(`<loc>${expectedSeoOrigin}/</loc>`);
   expect(sitemapText).toContain('/calculators/hourly-to-annual-income');
   expect(sitemapText).toContain('/calculators/retirement');
   expect(sitemapText).not.toContain('/404');

@@ -8,7 +8,7 @@ const origin = (configuredOrigin || 'https://example.invalid').replace(/\/$/, ''
 const publicDir = resolve(process.cwd(), 'public');
 mkdirSync(publicDir, { recursive: true });
 
-const robots = ['User-agent: *', 'Allow: /', '', 'Sitemap: /sitemap.xml', ''].join('\n');
+const robots = ['User-agent: *', 'Allow: /', '', `Sitemap: ${new URL('/sitemap.xml', `${origin}/`).toString()}`, ''].join('\n');
 const sitemap = `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${seoRoutes
   .map((route) => `  <url><loc>${new URL(route, `${origin}/`).toString()}</loc></url>`)
   .join('\n')}\n</urlset>\n`;
